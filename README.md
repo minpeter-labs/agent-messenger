@@ -55,19 +55,21 @@ This installs:
 
 - `agent-slack` — Slack CLI (user token, zero-config)
 - `agent-slackbot` — Slack Bot CLI (bot token, for server-side/CI/CD)
-- `agent-discord` — Discord CLI
+- `agent-discord` — Discord CLI (user token, zero-config)
 - `agent-discordbot` — Discord Bot CLI (bot token, for server-side/CI/CD)
-- `agent-teams` — Microsoft Teams CLI
+- `agent-teams` — Microsoft Teams CLI (user token, zero-config)
+- `agent-telegram` — Telegram CLI (user account via TDLib)
 
 ## Agent Skills
 
-Agent Messenger includes [Agent Skills](https://agentskills.io/) that teach your AI agent how to use these CLIs effectively. Five skills are available:
+Agent Messenger includes [Agent Skills](https://agentskills.io/) that teach your AI agent how to use these CLIs effectively.
 
 - **`agent-slack`** — Slack (user token, zero-config)
 - **`agent-slackbot`** — Slack Bot (bot token, for server-side/CI/CD)
-- **`agent-discord`** — Discord
+- **`agent-discord`** — Discord (user token, zero-config)
 - **`agent-discordbot`** — Discord Bot (bot token, for server-side/CI/CD)
-- **`agent-teams`** — Microsoft Teams
+- **`agent-teams`** — Microsoft Teams (user token, zero-config)
+- **`agent-telegram`** — Telegram (user account via TDLib)
 
 ### SkillPad
 
@@ -119,28 +121,41 @@ agent-slack snapshot --pretty
 agent-slack message send general "Hello from the CLI!"
 ```
 
-That's it. Credentials are extracted automatically from your Slack desktop app on first run. No OAuth flows. No API tokens. No configuration files.
+That's it for Slack, Discord, Teams, and their bot variants. Telegram additionally uses TDLib plus your own `api_id` and `api_hash`.
+
+## Telegram Quick Start
+
+```bash
+AGENT_TELEGRAM_API_ID=<api-id> \
+AGENT_TELEGRAM_API_HASH=<api-hash> \
+bunx --package agent-messenger agent-telegram auth login
+
+# Send a message
+bunx --package agent-messenger agent-telegram message send <chat-id-or-@username> "Hello from the CLI!"
+```
+
+If the env vars are missing, the CLI will prompt for them and store them locally for reuse. The official configuration path is still `AGENT_TELEGRAM_API_ID` and `AGENT_TELEGRAM_API_HASH`.
 
 ## Supported Platforms
 
-| Feature                    | Slack | Discord | Teams |
-| -------------------------- | :---: | :-----: | :---: |
-| Auto credential extraction |  ✅   |   ✅    |  ✅   |
-| Send & list messages       |  ✅   |   ✅    |  ✅   |
-| Search messages            |  ✅   |   ✅    |   —   |
-| Threads                    |  ✅   |   ✅    |   —   |
-| Channels & Users           |  ✅   |   ✅    |  ✅   |
-| Reactions                  |  ✅   |   ✅    |  ✅   |
-| File uploads               |  ✅   |   ✅    |  ✅   |
-| File downloads             |  ✅   |    —    |   —   |
-| Workspace snapshots        |  ✅   |   ✅    |  ✅   |
-| Multi-workspace            |  ✅   |   ✅    |  ✅   |
-| Activity feed              |  ✅   |    —    |   —   |
-| Drafts                     |  ✅   |    —    |   —   |
-| Saved items                |  ✅   |    —    |   —   |
-| Unread messages            |  ✅   |    —    |   —   |
-| Sidebar sections           |  ✅   |    —    |   —   |
-| Bot support                |  ✅   |   ✅    |   —   |
+| Feature                    | Slack | Discord | Teams | Telegram |
+| -------------------------- | :---: | :-----: | :---: | :------: |
+| Auto credential extraction |  ✅   |   ✅    |  ✅   |    —     |
+| Send & list messages       |  ✅   |   ✅    |  ✅   |    ✅     |
+| Search messages            |  ✅   |   ✅    |   —   |    —     |
+| Threads                    |  ✅   |   ✅    |   —   |    —     |
+| Channels & Users           |  ✅   |   ✅    |  ✅   |  partial  |
+| Reactions                  |  ✅   |   ✅    |  ✅   |    —     |
+| File uploads               |  ✅   |   ✅    |  ✅   |    —     |
+| File downloads             |  ✅   |    —    |   —   |    —     |
+| Workspace snapshots        |  ✅   |   ✅    |  ✅   |    —     |
+| Multi-workspace / account  |  ✅   |   ✅    |  ✅   |    ✅     |
+| Activity feed              |  ✅   |    —    |   —   |    —     |
+| Drafts                     |  ✅   |    —    |   —   |    —     |
+| Saved items                |  ✅   |    —    |   —   |    —     |
+| Unread messages            |  ✅   |    —    |   —   |    —     |
+| Sidebar sections           |  ✅   |    —    |   —   |    —     |
+| Bot support                |  ✅   |   ✅    |   —   |  partial  |
 
 > ⚠️ **Teams tokens expire in 60-90 minutes.** Re-run `agent-teams auth extract` to refresh. See [Teams Guide](skills/agent-teams/SKILL.md) for details.
 
@@ -151,6 +166,7 @@ That's it. Credentials are extracted automatically from your Slack desktop app o
 - **[Discord Guide](https://agent-messenger.dev/docs/integrations/discord)** — Full command reference for Discord
 - **[Discord Bot Guide](https://agent-messenger.dev/docs/integrations/discordbot)** — Bot token integration for server-side and CI/CD
 - **[Teams Guide](https://agent-messenger.dev/docs/integrations/teams)** — Full command reference for Microsoft Teams
+- **[Telegram Guide](https://agent-messenger.dev/docs/integrations/telegram)** — TDLib setup and Telegram command reference
 
 ## Use Cases
 

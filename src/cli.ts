@@ -36,6 +36,10 @@ program.command('discordbot', 'Interact with Discord using bot tokens', {
   executableFile: join(__dirname, 'platforms', 'discordbot', `cli${ext}`),
 })
 
+program.command('telegram', 'Interact with Telegram via TDLib', {
+  executableFile: join(__dirname, 'platforms', 'telegram', `cli${ext}`),
+})
+
 program.parse(process.argv)
 
 export default program
